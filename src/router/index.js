@@ -13,7 +13,7 @@ const routes = [
     component: Home
   },
   {
-    path: "/moon/:id",
+    path: "/moon/:id/:i",
     name: "moon",
     component: Moon
   }
