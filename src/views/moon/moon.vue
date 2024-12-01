@@ -3,10 +3,11 @@
     <h3></h3>
 
     <div class="space">
-      <!-- <img v-if="body.image" id="bodyimage" :src=body.image height="100" /> -->
+      <img v-if="body.image" id="bodyimage" :src=body.image @error="setAltImg" height="100" />
       <div>
         <h5>{{ body.englishName }}</h5>
       </div>
+      <router-link :to="{ name: 'home', params: { i: this.$route.params.i}}">Planet</router-link> 
       <br />
       <a v-on:click="onPrevClick" href="#" class="previous">&laquo; Previous</a>
       <a v-on:click="onNextClick" href="#" class="next">Next &raquo;</a>
@@ -62,9 +63,14 @@ export default {
         if (this.body === undefined) {
           this.i -= 1;
         }
-        // this.body.image = 'assets/' + this.body.id + '.png';
+        else{
+          this.body.image = 'assets/spaceimages/' + this.body.id + '.png';
+        }
       }
       xhr.send();
+    },
+    setAltImg(event) {
+      event.target.src = 'assets/noimage.png';
     }
   },
   created() {
