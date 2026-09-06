@@ -43,39 +43,59 @@ a {
 export default {
   name: 'Home',
   data: () => ({
-    i: 1,
-    body: {}
+    i: 0 ,
+    body: {},
+    bodies:[]
   }),
   methods: {
     onMoonClick() {
 
     },
     onPrevClick() {
-      if (this.i > 1) {
+      if (this.i > 0) {
         this.callBody(this.i -= 1);
       }
     },
     onNextClick() {
-      if (this.i < 8) {
+      if (this.i < 7) {
         this.callBody(this.i += 1);
       }
     },
-    callBody(i) {
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', 'https://api.le-systeme-solaire.net/rest.php/bodies?data=id%2CisPlanet%2Cdensity%2Cgravity%2CenglishName%2Cmoons%2CsideralOrbit&order=sideralOrbit%2Casc&page= ' + i + ' %2C1&filter%5B%5D=isPlanet%2Ceq%2Ctrue');
-      // xhr.open('GET', 'https://api.le-systeme-solaire.net/rest.php/bodies?order=sideralOrbit%2Casc&page= ' + i + ' %2C1&filter%5B%5D=isPlanet%2Ceq%2Ctrue');
-      xhr.onload = () => {
-        this.body = {};
-        this.body = JSON.parse(xhr.responseText).bodies[0];
-        this.body.image = 'assets/spaceimages/' + this.body.id + '.png';
-      }
-      xhr.send();
+    async callBody(i) {
+   //   const xhr = new XMLHttpRequest();
+     // xhr.open('GET', 'https://api.le-systeme-solaire.net/rest/bodies?data=id%2CisPlanet%2Cdensity%2Cgravity%2CenglishName%2Cmoons%2CsideralOrbit&order=sideralOrbit%2Casc&page='+ i +'%2C1&filter%5B%5D=isPlanet%2Ceq%2Ctrue');
+      // xhr.open('GET', 'https://api.le-systeme-solaire.net/rest/bodies?order=sideralOrbit%2Casc&page= ' + i + ' %2C1&filter%5B%5D=isPlanet%2Ceq%2Ctrue');
+      
+      //xhr.setRequestHeader("Authorization", "Bearer 671e9fe4-84b7-4324-8afe-9a5c2b6efe3b");
+
+      //xhr.onload = () => {
+       // this.body = {};
+       // this.body = JSON.parse(xhr.responseText).bodies[0];
+       // this.body.image = 'assets/spaceimages/' + this.body.id + '.png';
+     // }
+
+      //xhr.send();
+    //  this.body = {};
+    //  this.body = 'assets/solar-system.json';
+     // console.log(this.body );
+
+    // const response = await fetch('assets/solar-system.json');
+    
+    this.body = {};
+    this.body = this.bodies
+    .filter(body => body.isPlanet)
+    .sort((a, b) => a.sideralOrbit - b.sideralOrbit)[i];
+    this.body.image = 'assets/spaceimages/' + this.body.id + '.png';
+
     }
   },
-  created() {
+  async created() {
     if (this.$route.params.i) {
       this.i = this.$route.params.i;
     }
+    const response = await fetch('assets/solar-system.json');
+    const data = await response.json();
+    this.bodies = data.bodies;
     this.callBody(this.i);
   }
 };
