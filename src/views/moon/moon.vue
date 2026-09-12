@@ -89,10 +89,23 @@ export default {
     }
   },
   async created() {
-    const response = await fetch('assets/solar-system.json');
-    const data = await response.json();
-    this.bodies = data.bodies;
-    this.callBody(0);
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'assets/solar-system.json', true);
+
+    xhr.onload = () => {
+    if (xhr.status === 200) {
+      const data = JSON.parse(xhr.responseText);
+      this.bodies = data.bodies;
+      this.callBody(this.i);
+    }
+  };
+
+  xhr.send();
+
+    // const response = await fetch('assets/solar-system.json');
+    // const data = await response.json();
+    // this.bodies = data.bodies;
+    // this.callBody(0);
   }
 };
 </script>
