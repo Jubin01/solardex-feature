@@ -10,7 +10,11 @@
       </div>
       <!-- <span class="badge" v-for="(value, index) in body.types" :key="index">{{ value.type.name }}</span> -->
       <!-- <a v-on:click="onMoonClick" href="#" class="moon">Moons</a> -->
-      <router-link v-if="body.moons" :to="{ name: 'moon', params: { id: body.id, i: i } }">Moon</router-link>
+      <router-link :to="{ name: 'planet-details', params: { id: body.englishName, i: i } }">Planet Details</router-link>
+      <br />
+      <br />
+      <router-link v-if="body.moons" :to="{ name: 'moon', params: { planetid: body.id, planetindex: i } }">Moon</router-link>
+      <br />
       <br />
       <a v-on:click="onPrevClick" href="#" class="previous">&laquo; Previous</a>
       <a v-on:click="onNextClick" href="#" class="next">Next &raquo;</a>
